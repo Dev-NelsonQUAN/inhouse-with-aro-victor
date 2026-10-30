@@ -23,7 +23,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://inhouse.arovictor.com'),
+  // metadataBase: new URL('https://inhouse.arovictor.com'),
+  metadataBase: new URL('https://inhouse-with-aro-victor.vercel.app/'),
   
   title: {
     default: 'In-House with Aro Victor | Connect. Create. Celebrate.',
@@ -55,7 +56,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    url: 'https://inhouse.arovictor.com',
+    // url: 'https://inhouse.arovictor.com',
+    url: 'https://inhouse-with-aro-victor.vercel.app/',
     siteName: 'In-House with Aro Victor',
     title: 'In-House with Aro Victor - Connect. Create. Celebrate.',
     description: 

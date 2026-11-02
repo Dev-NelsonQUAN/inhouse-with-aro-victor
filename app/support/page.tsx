@@ -82,26 +82,24 @@ export default function SupportPage() {
 
   return (
     <main className="min-h-screen bg-[#FAF7F2] text-[#250a06] font-poppins py-10 px-4 sm:px-6 flex items-center justify-center">
-      <div className="w-full max-w-lg bg-white border border-[#250a06]/15 rounded-3xl p-6 sm:p-8 shadow-xl">
+      <div className="w-full max-w-lg bg-white border border-[#250a06]/15 rounded-3xl p-6 sm:p-8 shadow-xl ">
         
-        {/* Top Back Link */}
         <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#250a06]/10">
-          <Link href="/" className="inline-flex items-center gap-1.5 text-xs text-[#6B564E] hover:text-[#250a06] font-medium transition-colors">
+          <Link href="/" className="inline-flex items-center gap-1.5 text-[10px] md:text-xs text-[#6B564E] hover:text-[#250a06] font-medium transition-colors">
             <ArrowLeft className="size-3.5" />
             <span>Back to main site</span>
           </Link>
-          <span className="font-mono text-[10px] uppercase tracking-widest text-[#580e03] font-bold">
+          <span className="font-mono text-[8px] md:text-[10px] uppercase tracking-widest text-[#580e03] font-bold">
             REMOTE PATRON PASS
           </span>
         </div>
 
-        {/* Title Lockup */}
-        <div className="mb-6">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#580e03] text-[#f0ab60] text-[10px] font-mono font-bold uppercase mb-2">
+        <div className="mb-6 text-center md:text-left">
+          <div className="inline-flex items-center just gap-1.5 px-2.5 py-0.5 rounded-full bg-[#580e03] text-[#f0ab60] text-[10px] font-mono font-bold uppercase mb-2">
             <Heart className="size-3 fill-[#f0ab60]" />
             <span>SUPPORT FROM AFAR</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#250a06]">
+          <h1 className="text-[20px] min-[425px]:text-2xl sm:text-3xl font-black uppercase tracking-tight text-[#250a06]">
             Fuel the Gathering
           </h1>
           <p 
@@ -122,7 +120,6 @@ export default function SupportPage() {
               <p className="text-xs text-[#6B564E] mt-0.5">Transfer details for your pledge are below:</p>
             </div>
 
-            {/* Bank Card */}
             <div className="bg-[#FAF7F2] border border-[#250a06]/10 rounded-2xl p-4 mb-4 space-y-2.5">
               <div className="flex justify-between items-baseline border-b border-[#250a06]/10 pb-2">
                 <span className="text-[10px] font-mono text-[#6B564E] uppercase">SELECTED PLEDGE</span>
@@ -167,7 +164,6 @@ export default function SupportPage() {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="space-y-2">
               <a
                 href={receiptUrl}
@@ -191,13 +187,11 @@ export default function SupportPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
-            {/* 3 Tier Boxes */}
             <div className="flex flex-col gap-2">
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#250a06] font-bold">
                 Select Your Support Pledge:
               </span>
 
-              {/* 80k - 100k */}
               <div
                 onClick={() => setPledgeLevel('80k-100k')}
                 className={`py-2.5 px-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
@@ -217,10 +211,9 @@ export default function SupportPage() {
                     <span className="text-[10px] text-[#6B564E] block">Digital patron + uncut studio vault feed</span>
                   </div>
                 </div>
-                <span className="text-xs font-black text-[#580e03]">₦80k – ₦100k</span>
+                <span className="text-xs font-black text-[#580e03]">₦80k - ₦100k</span>
               </div>
 
-              {/* 100k - 200k */}
               <div
                 onClick={() => setPledgeLevel('100k-200k')}
                 className={`py-2.5 px-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
@@ -240,10 +233,9 @@ export default function SupportPage() {
                     <span className="text-[10px] text-[#6B564E] block">Special patron shoutout &amp; media support</span>
                   </div>
                 </div>
-                <span className="text-xs font-black text-[#e69842]">₦100k – ₦200k</span>
+                <span className="text-xs font-black text-[#e69842]">₦100k - ₦200k</span>
               </div>
 
-              {/* Above 200k */}
               <div
                 onClick={() => setPledgeLevel('above-200k')}
                 className={`py-2.5 px-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
@@ -308,17 +300,16 @@ export default function SupportPage() {
             <button
               type="submit"
               disabled={status === 'loading'}
-              className="mt-2 w-full py-3.5 rounded-xl bg-[#250a06] hover:bg-[#580e03] text-[#f0ab60] hover:text-white font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+              className="mt-2 w-full py-2.5 min-[425px]:py-3 md:py-3.5 rounded-xl bg-[#250a06] hover:bg-[#580e03] text-[#f0ab60] hover:text-white font-bold text-[11px] min-[425px]:text-[12px] md:text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
             >
               {status === 'loading' ? (
                 <>
-                  <Loader2 className="size-4 animate-spin text-[#f0ab60]" />
+                  <Loader2 className="size-2.5 md:size-4 animate-spin text-[#f0ab60]" />
                   <span>Logging Support...</span>
                 </>
               ) : (
                 <>
                   <span>Proceed to Bank Transfer Details</span>
-                  <ArrowUpRight className="size-4 stroke-[2.5]" />
                 </>
               )}
             </button>

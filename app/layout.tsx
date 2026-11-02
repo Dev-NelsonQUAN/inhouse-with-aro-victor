@@ -23,8 +23,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  // metadataBase: new URL('https://inhouse.arovictor.com'),
-  metadataBase: new URL('https://inhouse-with-aro-victor.vercel.app/'),
+  metadataBase: new URL('https://inhousewitharovictor.com'),
   
   title: {
     default: 'In-House with Aro Victor | Connect. Create. Celebrate.',
@@ -45,7 +44,7 @@ export const metadata: Metadata = {
     'Lagos Business Summit',
   ],
   
-  authors: [{ name: 'Aro Victor', url: 'https://arovictor.com' }],
+  authors: [{ name: 'Aro Victor', url: 'https://inhousewitharovictor.com' }],
   creator: 'Aro Victor & Team',
   publisher: 'In-House Experience',
   
@@ -56,8 +55,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_NG',
-    // url: 'https://inhouse.arovictor.com',
-    url: 'https://inhouse-with-aro-victor.vercel.app/',
+    url: 'https://inhousewitharovictor.com',
     siteName: 'In-House with Aro Victor',
     title: 'In-House with Aro Victor - Connect. Create. Celebrate.',
     description: 

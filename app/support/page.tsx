@@ -1,17 +1,19 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { 
   ArrowUpRight, 
   Copy, 
+  Check,
   CheckCheck, 
   Heart, 
   MessageCircle, 
   ShieldCheck, 
   Sparkles, 
   ArrowLeft,
-  Loader2 
+  Loader2,
+  Clock
 } from 'lucide-react'
 
 export default function SupportPage() {
@@ -21,6 +23,35 @@ export default function SupportPage() {
   const [phone, setPhone] = useState('')
   const [copied, setCopied] = useState(false)
   const [status, setStatus] = useState<'form' | 'loading' | 'success'>('form')
+
+  const [mounted, setMounted] = useState(false)
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+
+  useEffect(() => {
+    setMounted(true)
+    const target = new Date('2026-11-20T23:59:59+01:00').getTime()
+
+    const updateCountdown = () => {
+      const now = Date.now()
+      const diff = target - now
+
+      if (diff <= 0) {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+        return
+      }
+
+      setTimeLeft({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((diff / 1000 / 60) % 60),
+        seconds: Math.floor((diff / 1000) % 60),
+      })
+    }
+
+    updateCountdown()
+    const interval = setInterval(updateCountdown, 1000)
+    return () => clearInterval(interval)
+  }, [])
 
   const CONFIG = {
     bank: {
@@ -34,11 +65,11 @@ export default function SupportPage() {
   const getPledgeLabel = () => {
     switch (pledgeLevel) {
       case '80k-100k':
-        return '₦80,000 – ₦100,000 (Executive Backer)'
+        return '₦80,000 - ₦100,000 (Executive)'
       case '100k-200k':
-        return '₦100,000 – ₦200,000 (Patron)'
+        return '₦100,000 - ₦200,000 (Patron)'
       case 'above-200k':
-        return 'Above ₦200,000 (Key Partner)'
+        return 'Above ₦200,000 (Key Patron)'
     }
   }
 
@@ -81,10 +112,10 @@ export default function SupportPage() {
   )}`
 
   return (
-    <main className="min-h-screen bg-[#FAF7F2] text-[#250a06] font-poppins py-10 px-4 sm:px-6 flex items-center justify-center">
-      <div className="w-full max-w-lg bg-white border border-[#250a06]/15 rounded-3xl p-6 sm:p-8 shadow-xl ">
+    <main className="min-h-screen bg-[#FAF7F2] text-[#250a06] font-poppins py-6 sm:py-10 px-3.5 sm:px-6 flex items-center justify-center">
+      <div className="w-full max-w-lg bg-white border border-[#250a06]/15 rounded-3xl p-5 sm:p-8 shadow-xl">
         
-        <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#250a06]/10">
+        <div className="flex items-center justify-between mb-4 pb-3 border-b border-[#250a06]/10">
           <Link href="/" className="inline-flex items-center gap-1.5 text-[10px] md:text-xs text-[#6B564E] hover:text-[#250a06] font-medium transition-colors">
             <ArrowLeft className="size-3.5" />
             <span>Back to main site</span>
@@ -94,8 +125,41 @@ export default function SupportPage() {
           </span>
         </div>
 
-        <div className="mb-6 text-center md:text-left">
-          <div className="inline-flex items-center just gap-1.5 px-2.5 py-0.5 rounded-full bg-[#580e03] text-[#f0ab60] text-[10px] font-mono font-bold uppercase mb-2">
+        <div className="mb-5 p-2.5 sm:p-3 rounded-2xl bg-[#FAF7F2] border border-[#250a06]/10 flex flex-col min-[390px]:flex-row items-center md:items-start min-[390px]:items-center justify-between gap-2 shadow-xs">
+          <div>
+            <div className="flex items-center gap-1.5">
+              <Clock className="size-3 text-[#580e03]" />
+              <span className="text-[10px] sm:text-[11px] font-mono uppercase tracking-wider text-[#580e03] font-bold">
+                Pledges Close Nov 20
+              </span>
+            </div>
+            <span className="text-[9px] sm:text-[10px] text-[#6B564E] font-sans block">
+              Soundstage &amp; Vault Allocation
+            </span>
+          </div>
+
+          <div className="flex items-center gap-1 font-mono font-bold text-[11px] sm:text-xs self-center min-[390px]:self-auto">
+            <span className="px-1.5 py-0.5 bg-white border border-[#250a06]/10 rounded-md text-[#250a06]">
+              {mounted ? timeLeft.days : '0'}d
+            </span>
+            <span className="text-[#250a06]/30">:</span>
+            <span className="px-1.5 py-0.5 bg-white border border-[#250a06]/10 rounded-md text-[#250a06]">
+              {mounted ? String(timeLeft.hours).padStart(2, '0') : '00'}h
+            </span>
+            <span className="text-[#250a06]/30">:</span>
+            <span className="px-1.5 py-0.5 bg-white border border-[#250a06]/10 rounded-md text-[#250a06]">
+              {mounted ? String(timeLeft.minutes).padStart(2, '0') : '00'}m
+            </span>
+            <span className="text-[#250a06]/30">:</span>
+            <span className="px-1.5 py-0.5 bg-[#580e03] text-white rounded-md shadow-xs animate-pulse">
+              {mounted ? String(timeLeft.seconds).padStart(2, '0') : '00'}s
+            </span>
+          </div>
+        </div>
+
+        {/* Title Lockup */}
+        <div className="mb-5 text-center md:text-left">
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#580e03] text-[#f0ab60] text-[10px] font-mono font-bold uppercase mb-2">
             <Heart className="size-3 fill-[#f0ab60]" />
             <span>SUPPORT FROM AFAR</span>
           </div>
@@ -106,7 +170,7 @@ export default function SupportPage() {
             style={{ fontFamily: "var(--font-jakarta), 'Plus Jakarta Sans', sans-serif" }}
             className="text-xs text-[#6B564E] mt-1 leading-relaxed"
           >
-            Can&apos;t be physically present in Lagos? You can still be part of the heartbeat. Support the soundstage, uncut media production, and our Day 3 open festival <strong className="text-[#250a06]">Led2Lead</strong>.
+            Can&apos;t be physically present in Lagos? You can still be part of the heartbeat. Support the soundstage, uncut media production, and our Day 3 open conference <strong className="text-[#250a06]">Led2Lead</strong>.
           </p>
         </div>
 
@@ -147,7 +211,7 @@ export default function SupportPage() {
                 <button
                   type="button"
                   onClick={handleCopy}
-                  className="px-2.5 py-1.5 rounded-lg bg-white border border-[#250a06]/15 text-[#250a06] hover:bg-[#250a06] hover:text-white transition-all text-xs font-mono flex items-center gap-1.5 cursor-pointer shadow-xs"
+                  className="px-2.5 py-1 rounded-lg bg-white border border-[#250a06]/15 text-[#250a06] hover:bg-[#250a06] hover:text-white transition-all text-xs font-mono flex items-center gap-1.5 cursor-pointer shadow-xs"
                 >
                   {copied ? (
                     <>
@@ -187,81 +251,85 @@ export default function SupportPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+            
             <div className="flex flex-col gap-2">
               <span className="text-[10px] font-mono uppercase tracking-wider text-[#250a06] font-bold">
-                Select Your Support Pledge:
+                SELECT YOUR SUPPORT PLEDGE:
               </span>
 
               <div
                 onClick={() => setPledgeLevel('80k-100k')}
-                className={`py-2.5 px-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                className={`py-2 px-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                   pledgeLevel === '80k-100k'
                     ? 'border-[#250a06] bg-[#FAF7F2]'
-                    : 'border-[#250a06]/15 bg-white hover:border-[#250a06]/30'
+                    : 'border-[#250a06]/15 hover:border-[#250a06]/30 bg-white'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <div className={`h-4 w-4 rounded-full border flex items-center justify-center shrink-0 ${
-                    pledgeLevel === '80k-100k' ? 'bg-[#250a06] border-[#250a06]' : 'border-[#250a06]/30'
-                  }`}>
-                    {pledgeLevel === '80k-100k' && <span className="h-2 w-2 rounded-full bg-white" />}
+                <div className="flex-1 min-w-0 pr-2">
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-xs font-bold text-[#250a06]">Executive</span>
+                    <span className="text-[#250a06]/40 text-xs">•</span>
+                    <span className="text-xs font-black text-[#580e03]">₦80,000 - ₦100,000</span>
                   </div>
-                  <div>
-                    <span className="text-xs font-bold text-[#250a06]">Executive Backer</span>
-                    <span className="text-[10px] text-[#6B564E] block">Digital patron + uncut studio vault feed</span>
-                  </div>
+                  <span className="text-[10px] text-[#6B564E] block leading-tight mt-0.5">
+                    Masterclasses &amp; retreat access
+                  </span>
                 </div>
-                <span className="text-xs font-black text-[#580e03]">₦80k - ₦100k</span>
+                {pledgeLevel === '80k-100k' && (
+                  <Check className="size-3.5 text-[#250a06] stroke-[2.5] shrink-0" />
+                )}
               </div>
 
               <div
                 onClick={() => setPledgeLevel('100k-200k')}
-                className={`py-2.5 px-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                className={`py-2 px-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                   pledgeLevel === '100k-200k'
                     ? 'border-[#250a06] bg-[#FAF7F2]'
-                    : 'border-[#250a06]/15 bg-white hover:border-[#250a06]/30'
+                    : 'border-[#250a06]/15 hover:border-[#250a06]/30 bg-white'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <div className={`h-4 w-4 rounded-full border flex items-center justify-center shrink-0 ${
-                    pledgeLevel === '100k-200k' ? 'bg-[#250a06] border-[#250a06]' : 'border-[#250a06]/30'
-                  }`}>
-                    {pledgeLevel === '100k-200k' && <span className="h-2 w-2 rounded-full bg-white" />}
-                  </div>
-                  <div>
+                <div className="flex-1 min-w-0 pr-2">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-xs font-bold text-[#250a06]">Patron</span>
-                    <span className="text-[10px] text-[#6B564E] block">Special patron shoutout &amp; media support</span>
+                    <span className="text-[#250a06]/40 text-xs">•</span>
+                    <span className="text-xs font-black text-[#e69842]">₦100,000 - ₦200,000</span>
                   </div>
+                  <span className="text-[10px] text-[#6B564E] block leading-tight mt-0.5">
+                    + On-site 4K Studio Interview cut
+                  </span>
                 </div>
-                <span className="text-xs font-black text-[#e69842]">₦100k - ₦200k</span>
+                {pledgeLevel === '100k-200k' && (
+                  <Check className="size-3.5 text-[#250a06] stroke-[2.5] shrink-0" />
+                )}
               </div>
 
               <div
                 onClick={() => setPledgeLevel('above-200k')}
-                className={`py-2.5 px-3 rounded-xl border-2 transition-all cursor-pointer flex items-center justify-between ${
+                className={`py-2 px-3 rounded-xl border transition-all cursor-pointer flex items-center justify-between ${
                   pledgeLevel === 'above-200k'
                     ? 'border-[#580e03] bg-[#FAF7F2]'
                     : 'border-[#250a06]/15 hover:border-[#250a06]/30 bg-white'
                 }`}
               >
-                <div className="flex items-center gap-2.5">
-                  <div className={`h-4 w-4 rounded-full border flex items-center justify-center shrink-0 ${
-                    pledgeLevel === 'above-200k' ? 'bg-[#580e03] border-[#580e03]' : 'border-[#250a06]/30'
-                  }`}>
-                    {pledgeLevel === 'above-200k' && <span className="h-2 w-2 rounded-full bg-white" />}
-                  </div>
-                  <div>
+                <div className="flex-1 min-w-0 pr-2">
+                  <div className="flex items-center gap-1.5 flex-wrap">
                     <span className="text-xs font-bold text-[#580e03]">Key Patron</span>
-                    <span className="text-[10px] text-[#6B564E] block">Key production backer for Led2Lead</span>
+                    <span className="text-[#250a06]/40 text-xs">•</span>
+                    <span className="text-xs font-black text-[#250a06]">Above ₦200,000</span>
                   </div>
+                  <span className="text-[10px] text-[#6B564E] block leading-tight mt-0.5">
+                    Key Partner &amp; Production Backer
+                  </span>
                 </div>
-                <span className="text-xs font-black text-[#250a06]">Above ₦200k</span>
+                {pledgeLevel === 'above-200k' && (
+                  <Check className="size-3.5 text-[#580e03] stroke-[2.5] shrink-0" />
+                )}
               </div>
             </div>
 
             {/* Inputs */}
             <div>
-              <label className="text-[10px] font-mono text-[#6B564E] uppercase block mb-1">Your Name *</label>
+              <label className="text-[10px] font-mono text-[#6B564E] uppercase block mb-1">YOUR NAME *</label>
               <input
                 type="text"
                 required
@@ -272,29 +340,28 @@ export default function SupportPage() {
               />
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <div>
-                <label className="text-[10px] font-mono text-[#6B564E] uppercase block mb-1">WhatsApp Phone *</label>
-                <input
-                  type="tel"
-                  required
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+234..."
-                  className="w-full bg-[#FAF7F2] border border-[#250a06]/15 rounded-xl px-3 py-2 text-sm text-[#250a06] focus:outline-none focus:border-[#250a06]"
-                />
-              </div>
-              <div>
-                <label className="text-[10px] font-mono text-[#6B564E] uppercase block mb-1">Email *</label>
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="name@gmail.com"
-                  className="w-full bg-[#FAF7F2] border border-[#250a06]/15 rounded-xl px-3 py-2 text-sm text-[#250a06] focus:outline-none focus:border-[#250a06]"
-                />
-              </div>
+            <div>
+              <label className="text-[10px] font-mono text-[#6B564E] uppercase block mb-1">WHATSAPP PHONE *</label>
+              <input
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+234..."
+                className="w-full bg-[#FAF7F2] border border-[#250a06]/15 rounded-xl px-3 py-2 text-sm text-[#250a06] focus:outline-none focus:border-[#250a06]"
+              />
+            </div>
+
+            <div>
+              <label className="text-[10px] font-mono text-[#6B564E] uppercase block mb-1">EMAIL *</label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@gmail.com"
+                className="w-full bg-[#FAF7F2] border border-[#250a06]/15 rounded-xl px-3 py-2 text-sm text-[#250a06] focus:outline-none focus:border-[#250a06]"
+              />
             </div>
 
             <button
@@ -304,7 +371,7 @@ export default function SupportPage() {
             >
               {status === 'loading' ? (
                 <>
-                  <Loader2 className="size-2.5 md:size-4 animate-spin text-[#f0ab60]" />
+                  <Loader2 className="size-3.5 animate-spin text-[#f0ab60]" />
                   <span>Logging Support...</span>
                 </>
               ) : (
